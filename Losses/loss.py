@@ -4,6 +4,7 @@ Implementation of the following loss functions:
 2. Focal Loss
 3. Cross Entropy + MMCE_weighted
 4. Cross Entropy + MMCE
+5. Brier Score
 '''
 
 from torch.nn import functional as F
