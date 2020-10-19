@@ -67,3 +67,34 @@ def train_single_epoch(epoch,
     print('====> Epoch: {} Average loss: {:.4f}'.format(
         epoch, train_loss / num_samples))
     return train_loss / num_samples
+
+
+
+def test_single_epoch(epoch,
+                      model,
+                      test_val_loader,
+                      device,
+                      loss_function='cross_entropy',
+                      gamma=1.0,
+                      lamda=1.0):
+    '''
+    Util method for testing a model for a single epoch.
+    '''
+    model.eval()
+    loss = 0
+    num_samples = 0
+    with torch.no_grad():
+        for i, (data, labels) in enumerate(test_val_loader):
+            data = data.to(device)
+            labels = labels.to(device)
+
+            logits = model(data)
+            if ('mmce' in loss_function):
+                loss += (len(data) * loss_function_dict[loss_function](logits, labels, gamma=gamma, lamda=lamda, device=device).item())
+            else:
+                loss += loss_function_dict[loss_function](logits, labels, gamma=gamma, lamda=lamda, device=device).item()
+            num_samples += len(data)
+
+    print('======> Test set loss: {:.4f}'.format(
+        loss / num_samples))
+    return loss / num_samples
