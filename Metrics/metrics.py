@@ -7,6 +7,13 @@ References:
 '''
 
 import math
+import torch
+from torch.nn import functional as F
+from torch import nn
+
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+
 
 # Some keys used for the following dictionaries
 COUNT = 'count'
@@ -103,3 +110,29 @@ def l2_error(confs, preds, labels, num_bins=15):
                (bin_accuracy - bin_confidence)**2
         l2_error = math.sqrt(l2_sum)
     return l2_error
+
+
+def test_classification_net(model, data_loader, device):
+    '''
+    This function reports classification accuracy and confusion matrix over a dataset.
+    '''
+    model.eval()
+    labels_list = []
+    predictions_list = []
+    confidence_vals_list = []
+    with torch.no_grad():
+        for i, (data, label) in enumerate(data_loader):
+            data = data.to(device)
+            label = label.to(device)
+
+            logits = model(data)
+            softmax = F.softmax(logits, dim=1)
+            confidence_vals, predictions = torch.max(softmax, dim=1)
+
+            labels_list.extend(label.cpu().numpy().tolist())
+            predictions_list.extend(predictions.cpu().numpy().tolist())
+            confidence_vals_list.extend(confidence_vals.cpu().numpy().tolist())
+    accuracy = accuracy_score(labels_list, predictions_list)
+
+    return confusion_matrix(labels_list, predictions_list), accuracy, labels_list,\
+        predictions_list, confidence_vals_list

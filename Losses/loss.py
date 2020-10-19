@@ -15,30 +15,30 @@ from Losses.mmce import MMCE, MMCE_weighted
 from Losses.brier_score import BrierScore
 
 
-def cross_entropy(logits, targets):
+def cross_entropy(logits, targets, **kwargs):
     return F.cross_entropy(logits, targets, reduction='sum')
 
 
-def focal_loss(logits, targets, gamma=1):
-    return FocalLoss(gamma=gamma)(logits, targets)
+def focal_loss(logits, targets, **kwargs):
+    return FocalLoss(gamma=kwargs['gamma'])(logits, targets)
 
 
-def focal_loss_adaptive(logits, targets, gamma=3.0, device=None):
-    return FocalLossAdaptive(gamma=gamma,
-                             device=device)(logits, targets)
+def focal_loss_adaptive(logits, targets, **kwargs):
+    return FocalLossAdaptive(gamma=kwargs['gamma'],
+                             device=kwargs['device'])(logits, targets)
 
 
-def mmce(logits, targets, device, lamda=1):
+def mmce(logits, targets, **kwargs):
     ce = F.cross_entropy(logits, targets)
-    mmce = MMCE(device)(logits, targets)
-    return ce + (lamda * mmce)
+    mmce = MMCE(kwargs['device'])(logits, targets)
+    return ce + (kwargs['lamda'] * mmce)
 
 
-def mmce_weighted(logits, targets, device, lamda=1):
+def mmce_weighted(logits, targets, **kwargs):
     ce = F.cross_entropy(logits, targets)
-    mmce = MMCE_weighted(device)(logits, targets)
-    return ce + (lamda * mmce)
+    mmce = MMCE_weighted(kwargs['device'])(logits, targets)
+    return ce + (kwargs['lamda'] * mmce)
 
 
-def brier_score(logits, targets):
+def brier_score(logits, targets, **kwargs):
     return BrierScore()(logits, targets)
