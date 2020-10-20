@@ -93,7 +93,7 @@ def parseArgs():
     lamda = 1.0
     weight_decay = 5e-4
     log_interval = 50
-    save_interval = 1
+    save_interval = 50
     save_loc = './'
     model_name = None
     saved_model_name = "resnet50_cross_entropy_350.model"
