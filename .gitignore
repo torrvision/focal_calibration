@@ -1,4 +1,2 @@
 data
-*.pyc
-*.model
 __pycache__
