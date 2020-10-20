@@ -110,7 +110,7 @@ def parseArgs():
         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--dataset", type=str, default=default_dataset,
                         dest="dataset", help='dataset to train on')
-    parser.add_argument("-dataset-root", type=str, default=dataset_root,
+    parser.add_argument("--dataset-root", type=str, default=dataset_root,
                         dest="dataset_root", help='root path of the dataset (for tiny imagenet)')
     parser.add_argument("--data-aug", action="store_true", dest="data_aug")
     parser.set_defaults(data_aug=True)
