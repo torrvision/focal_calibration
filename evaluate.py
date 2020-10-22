@@ -176,7 +176,7 @@ if __name__ == "__main__":
     cece_criterion = ClasswiseECELoss().cuda()
 
     logits, labels = get_logits_labels(test_loader, net)
-    conf_matrix, p_accuracy, labels, predictions, confidences = test_classification_net_logits(logits, labels)
+    conf_matrix, p_accuracy, _, _, _ = test_classification_net_logits(logits, labels)
 
     p_ece = ece_criterion(logits, labels).item()
     p_adaece = adaece_criterion(logits, labels).item()
@@ -199,7 +199,7 @@ if __name__ == "__main__":
     scaled_model.set_temperature(val_loader, cross_validate=cross_validation_error)
     T_opt = scaled_model.get_temperature()
     logits, labels = get_logits_labels(test_loader, scaled_model)
-    conf_matrix, accuracy, labels, predictions, confidences = test_classification_net_logits(logits, labels)
+    conf_matrix, accuracy, _, _, _ = test_classification_net_logits(logits, labels)
 
     ece = ece_criterion(logits, labels).item()
     adaece = adaece_criterion(logits, labels).item()
