@@ -59,3 +59,5 @@ python evaluate.py --dataset cifar10 --model resnet50 --save-path /path/to/saved
 ```
 
 The jupyter notebook is simpler to use and quite self explanatory. The following is the result of evaluating the ResNet-50 we trained using the cross-entropy objective.
+
+![ResNet50_Result](resnet50_results.png)
