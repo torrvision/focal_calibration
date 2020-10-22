@@ -103,7 +103,7 @@ def get_logits_labels(data_loader, net):
     with torch.no_grad():
         for data, label in data_loader:
             data = data.cuda()
-            logits = model(data)
+            logits = net(data)
             logits_list.append(logits)
             labels_list.append(label)
         logits = torch.cat(logits_list).cuda()
