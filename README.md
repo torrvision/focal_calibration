@@ -21,13 +21,11 @@ The code is based on PyTorch and requires a few further dependencies, listed in 
 
 Most datasets will be downloaded directly on running the code. However, [Tiny ImageNet](https://tiny-imagenet.herokuapp.com/) needs to be downloaded separately for the data loader to work.
 
-<<<<<<< HEAD
+
 ### Pretrained models
 
 The pretrained models for Focal Loss (Sample-Dependent gamma 5, 3) and Focal Loss (gamma 3) for all the datasets can be [downloaded from here](http://www.robots.ox.ac.uk/~viveka/focal_calibration/).
 
-=======
->>>>>>> More changes to README.md
 ## Training a model
 
 In order to train a model, please use the [train.py](train.py) script. The default configuration (i.e., just running ```python train.py```) will train a ResNet50 model on the cross-entropy loss function. The following are the important parameters of the training:
@@ -80,3 +78,4 @@ To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-
 ## Questions
 
 If you have any questions or doubts, please feel free to reach out to us at the email addresses provided in the paper or you can directly open an issue in this repository.
+
