@@ -17,7 +17,6 @@ If the code or the paper has been useful in your research, please add a citation
 
 The code is based on PyTorch and requires a few further dependencies, listed in [environment.yml](environment.yml). It should work with newer versions as well.
 
-
 ### Datasets
 
 Most datasets will be downloaded directly on running the code. However, [Tiny ImageNet](https://tiny-imagenet.herokuapp.com/) needs to be downloaded separately for the data loader to work.
