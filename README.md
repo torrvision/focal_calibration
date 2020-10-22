@@ -24,4 +24,20 @@ Most datasets will be downloaded directly on running the code. However, [Tiny Im
 
 ## Training
 
-In order to train a model, please use the [train.py](train.py) script. The default configuration (i.e., just running ```python train.py```) will train a ResNet50 model on the cross-entropy loss function. The following are the parameters of the training
+In order to train a model, please use the [train.py](train.py) script. The default configuration (i.e., just running ```python train.py```) will train a ResNet50 model on the cross-entropy loss function. The following are the important parameters of the training:
+```
+--dataset: dataset to train on [cifar10/cifar100/tiny_imagenet]
+--dataset-root: path of the Tiny ImageNet dataset (not necessary for CIFAR-10/100)
+--loss: loss function of choice (cross_entropy/focal_loss/focal_loss_adaptive/mmce/mmce_weighted/brier_score)
+--gamma: gamma for focal loss
+--lamda: lambda value for MMCE
+--gamma-schedule: whether to use a scheduled gamma during training
+--save-path: path for saving models
+--model: model to train (resnet50/resnet110/wide_resnet/densenet121)
+```
+
+As an example, in order to train a ResNet-50 model on CIFAR-10 using focal loss with ```\gamma = 3```, we can write the following script:
+```
+python train.py --dataset cifar10 --model resnet50 --loss focal_loss --gamma 3.0
+``` 
+
