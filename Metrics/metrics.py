@@ -165,7 +165,7 @@ class ECELoss(nn.Module):
     Compute ECE (Expected Calibration Error)
     '''
     def __init__(self, n_bins=15):
-        super(_ECELoss, self).__init__()
+        super(ECELoss, self).__init__()
         bin_boundaries = torch.linspace(0, 1, n_bins + 1)
         self.bin_lowers = bin_boundaries[:-1]
         self.bin_uppers = bin_boundaries[1:]
@@ -193,7 +193,7 @@ class AdaptiveECELoss(nn.Module):
     Compute Adaptive ECE
     '''
     def __init__(self, n_bins=15):
-        super(_AdaptiveECELoss, self).__init__()
+        super(AdaptiveECELoss, self).__init__()
         self.nbins = n_bins
 
     def histedges_equalN(self, x):
@@ -226,7 +226,7 @@ class ClasswiseECELoss(nn.Module):
     Compute Classwise ECE
     '''
     def __init__(self, n_bins=15):
-        super(_ClasswiseECELoss, self).__init__()
+        super(ClasswiseECELoss, self).__init__()
         bin_boundaries = torch.linspace(0, 1, n_bins + 1)
         self.bin_lowers = bin_boundaries[:-1]
         self.bin_uppers = bin_boundaries[1:]
