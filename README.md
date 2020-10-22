@@ -1,2 +1,16 @@
-# focal_calibration
+# Focal Calibration
+
+This repository contains the code for [*Calibrating Deep Neural Networks using Focal Loss*](https://arxiv.org/abs/2002.09437), which has been accepted for publication in NeurIPS 2020.
+
+If the code or the paper has been useful in your research, please add a citation to our work:
+
+```
+@article{mukhoti2020calibrating,
+  title={Calibrating Deep Neural Networks using Focal Loss},
+  author={Mukhoti, Jishnu and Kulharia, Viveka and Sanyal, Amartya and Golodetz, Stuart and Torr, Philip HS and Dokania, Puneet K},
+  booktitle={Advances in Neural Information Processing Systems},
+  year={2020}
+}
+```
+
 Code for the paper "Calibrating Deep Neural Networks using Focal Loss" https://arxiv.org/abs/2002.09437
