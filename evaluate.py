@@ -97,7 +97,7 @@ def parseArgs():
     return parser.parse_args()
 
 
-def get_logits_labels(data_loader, net)
+def get_logits_labels(data_loader, net):
     logits_list = []
     labels_list = []
     with torch.no_grad():
