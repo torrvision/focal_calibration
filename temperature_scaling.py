@@ -20,7 +20,7 @@ class ModelWithTemperature(nn.Module):
     def __init__(self, model, log=True):
         super(ModelWithTemperature, self).__init__()
         self.model = model
-        self.temperature = 1.0
+        self.temperature = nn.Parameter(torch.ones(1) * 1.5)
         self.log = log
 
 
@@ -34,7 +34,8 @@ class ModelWithTemperature(nn.Module):
         Perform temperature scaling on logits
         """
         # Expand temperature to match the size of logits
-        return logits / self.temperature
+        temperature = self.temperature.unsqueeze(1).expand(logits.size(0), logits.size(1))
+        return logits / temperature
 
 
     def set_temperature(self,
@@ -72,7 +73,7 @@ class ModelWithTemperature(nn.Module):
         T_opt_ece = 1
         T = 0.1
         for i in range(100):
-            self.temperature =  T
+            self.temperature = nn.Parameter(torch.ones(1) * T)
             self.cuda()
             after_temperature_nll = nll_criterion(self.temperature_scale(logits), labels).item()
             after_temperature_ece = ece_criterion(self.temperature_scale(logits), labels).item()
@@ -83,13 +84,12 @@ class ModelWithTemperature(nn.Module):
             if ece_val > after_temperature_ece:
                 T_opt_ece = T
                 ece_val = after_temperature_ece
-
             T += 0.1
 
         if cross_validate == 'ece':
-            self.temperature = T_opt_ece
+            self.temperature = nn.Parameter(torch.ones(1) * T_opt_ece)
         else:
-            self.temperature = T_opt_nll
+            self.temperature = nn.Parameter(torch.ones(1) * T_opt_nll)
         self.cuda()
 
         # Calculate NLL and ECE after temperature scaling
