@@ -209,7 +209,7 @@ if __name__ == "__main__":
     res_str += '&{:.4f}({:.2f})&{:.4f}&{:.4f}&{:.4f}'.format(nll,  T_opt,  ece,  adaece, cece)
 
     if args.log:
-        print ('Optimal temperature by cross validating on nll: ' + str(T_opt))
+        print ('Optimal temperature: ' + str(T_opt))
         print (conf_matrix)
         print ('Test error: ' + str((1 - accuracy)))
         print ('Test NLL: ' + str(nll))
