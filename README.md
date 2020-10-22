@@ -61,3 +61,10 @@ python evaluate.py --dataset cifar10 --model resnet50 --save-path /path/to/saved
 The jupyter notebook is simpler to use and quite self explanatory. The following is the result of evaluating the ResNet-50 we trained using the cross-entropy objective.
 
 ![ResNet50_Result](resnet50_results.png)
+
+
+## OOD Notebook
+
+To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-distribution dataset) and tested on SVHN (out-of-distribution dataset), please use the [evaluate_single_model_ood.ipynb](Experiments/evaluate_single_model_ood.ipynb) notebook. The following is the ROC plot obtained from the ResNet-50 model which we trained on CIFAR-10 using the cross-entropy objective function.
+
+![ROC](roc.png)
