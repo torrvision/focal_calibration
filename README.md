@@ -70,7 +70,9 @@ The pretrained models for Focal Loss (Sample-Dependent gamma 5, 3) and Focal Los
 
 To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-distribution dataset) and tested on SVHN (out-of-distribution dataset), please use the [evaluate_single_model_ood.ipynb](Experiments/evaluate_single_model_ood.ipynb) notebook. The following is the ROC plot obtained from the ResNet-50 model which we trained on CIFAR-10 using the cross-entropy objective function.
 
+<center>
 <img src="roc.png" width="500" class="center">
+</center>
 
 ## Questions
 
