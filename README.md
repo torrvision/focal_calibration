@@ -43,4 +43,4 @@ python train.py --dataset cifar10 --model resnet50 --loss focal_loss --gamma 3.0
 
 ## Evaluating a model
 
-In order to evaluate a trained model, either use the [evaluate_single_model.ipynb](evaluate_single_model.ipynb) notebook or you can also use the [evaluate.py](evaluate.py) script.
+In order to evaluate a trained model, either use the [evaluate_single_model.ipynb](Experiments/evaluate_single_model.ipynb) notebook or you can also use the [evaluate.py](evaluate.py) script.
