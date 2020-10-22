@@ -21,6 +21,7 @@ The code is based on PyTorch and requires a few further dependencies, listed in 
 
 Most datasets will be downloaded directly on running the code. However, [Tiny ImageNet](https://tiny-imagenet.herokuapp.com/) needs to be downloaded separately for the data loader to work.
 
+<<<<<<< HEAD
 ## Training a model
 
 In order to train a model, please use the [train.py](train.py) script. The default configuration (i.e., just running ```python train.py```) will train a ResNet50 model on the cross-entropy loss function. The following are the important parameters of the training:
