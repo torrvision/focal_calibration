@@ -76,4 +76,3 @@ To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-
 ## Questions
 
 If you have any questions or doubts, please feel free to reach out to us at the email addresses provided in the paper or you can directly open an issue in this repository.
-
