@@ -22,7 +22,7 @@ The code is based on PyTorch and requires a few further dependencies, listed in 
 
 Most datasets will be downloaded directly on running the code. However, [Tiny ImageNet](https://tiny-imagenet.herokuapp.com/) needs to be downloaded separately for the data loader to work.
 
-## Training
+## Training a model
 
 In order to train a model, please use the [train.py](train.py) script. The default configuration (i.e., just running ```python train.py```) will train a ResNet50 model on the cross-entropy loss function. The following are the important parameters of the training:
 ```
@@ -36,8 +36,11 @@ In order to train a model, please use the [train.py](train.py) script. The defau
 --model: model to train (resnet50/resnet110/wide_resnet/densenet121)
 ```
 
-As an example, in order to train a ResNet-50 model on CIFAR-10 using focal loss with ```\gamma = 3```, we can write the following script:
+As an example, in order to train a ResNet-50 model on CIFAR-10 using focal loss with ```gamma = 3```, we can write the following script:
 ```
 python train.py --dataset cifar10 --model resnet50 --loss focal_loss --gamma 3.0
 ``` 
 
+## Evaluating a model
+
+In order to evaluate a trained model, either use the [evaluate_single_model.ipynb](evaluate_single_model.ipynb) notebook or you can also use the [evaluate.py](evaluate.py) script.
