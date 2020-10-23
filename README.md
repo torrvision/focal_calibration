@@ -65,11 +65,6 @@ The jupyter notebook is simpler to use and quite self explanatory. The following
 
 ![ResNet50_Result](resnet50_results.png)
 
-### Pretrained models
-
-The pretrained models for Focal Loss (Sample-Dependent gamma 5, 3) and Focal Loss (gamma 3) for all the datasets can be [downloaded from here](http://www.robots.ox.ac.uk/~viveka/focal_calibration/).
-
-
 ## OOD Notebook
 
 To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-distribution dataset) and tested on SVHN (out-of-distribution dataset), please use the [evaluate_single_model_ood.ipynb](Experiments/evaluate_single_model_ood.ipynb) notebook. The following is the ROC plot obtained from the ResNet-50 model which we trained on CIFAR-10 using the cross-entropy objective function.
