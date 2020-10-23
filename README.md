@@ -17,10 +17,13 @@ If the code or the paper has been useful in your research, please add a citation
 
 The code is based on PyTorch and requires a few further dependencies, listed in [environment.yml](environment.yml). It should work with newer versions as well.
 
-
 ### Datasets
 
 Most datasets will be downloaded directly on running the code. However, [Tiny ImageNet](https://tiny-imagenet.herokuapp.com/) needs to be downloaded separately for the data loader to work.
+
+### Pretrained models
+
+The pretrained models for Focal Loss (Sample-Dependent gamma 5, 3) and Focal Loss (gamma 3) for all the datasets can be [downloaded from here](http://www.robots.ox.ac.uk/~viveka/focal_calibration/).
 
 ## Training a model
 
@@ -62,17 +65,13 @@ The jupyter notebook is simpler to use and quite self explanatory. The following
 
 ![ResNet50_Result](resnet50_results.png)
 
-### Pretrained models
-
-The pretrained models for Focal Loss (Sample-Dependent gamma 5, 3) and Focal Loss (gamma 3) for all the datasets can be [downloaded from here](http://www.robots.ox.ac.uk/~viveka/focal_calibration/).
-
-
 ## OOD Notebook
 
 To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-distribution dataset) and tested on SVHN (out-of-distribution dataset), please use the [evaluate_single_model_ood.ipynb](Experiments/evaluate_single_model_ood.ipynb) notebook. The following is the ROC plot obtained from the ResNet-50 model which we trained on CIFAR-10 using the cross-entropy objective function.
 
-![ROC](roc.png)
-
+<center>
+<img src="roc.png" width="500" class="center">
+</center>
 
 ## Questions
 
