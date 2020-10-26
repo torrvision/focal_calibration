@@ -65,6 +65,15 @@ The jupyter notebook is simpler to use and quite self explanatory. The following
 
 ![ResNet50_Result](resnet50_results.png)
 
+The test-set classification errors and ECE values obtained from ResNet-50, ResNet-110, Wide-ResNet-26-10 and DenseNet-121 trained on CIFAR-10 are provided in the tables below. For more results, please refer to the paper. The following table shows the test set classification error.
+
+| Model Architecture  | Cross-Entropy | Brier Loss | MMCE | LS-0.05 | FL-3 (Ours) | FLSD-53 (Ours) |
+| ---  | --- | --- | --- | --- | --- | --- |
+| ResNet-50  | 4.95 | 5.0 | 4.99 | 5.29 | 5.25 | 4.98 |
+| ResNet-110  | 4.89 | 5.48 | 5.4 | 5.52 | 5.08 | 5.42 |
+| Wide-ResNet-26-10  | 3.86 | 4.08 | 3.91 | 4.2 | 4.13 | 4.01 |
+| DenseNet-121  | 5.0 | 5.11 | 5.41 | 5.09 | 5.33 | 5.46 |
+
 ## OOD Notebook
 
 To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-distribution dataset) and tested on SVHN (out-of-distribution dataset), please use the [evaluate_single_model_ood.ipynb](Experiments/evaluate_single_model_ood.ipynb) notebook. The following is the ROC plot obtained from the ResNet-50 model which we trained on CIFAR-10 using the cross-entropy objective function.
