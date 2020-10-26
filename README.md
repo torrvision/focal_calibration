@@ -65,7 +65,7 @@ The jupyter notebook is simpler to use and quite self explanatory. The following
 
 ![ResNet50_Result](resnet50_results.png)
 
-The test-set classification errors and ECE values obtained from ResNet-50, ResNet-110, Wide-ResNet-26-10 and DenseNet-121 trained on CIFAR-10 are provided in the tables below. For more results, please refer to the paper. The following table shows the test set classification error.
+The test-set classification errors and ECE values obtained from ResNet-50, ResNet-110, Wide-ResNet-26-10 and DenseNet-121 trained on CIFAR-10 are provided in the tables below. For more results, please refer to the paper. The following table shows the CIFAR-10 test set classification error %.
 
 | Model Architecture  | Cross-Entropy | Brier Loss | MMCE | LS-0.05 | FL-3 (Ours) | FLSD-53 (Ours) |
 | ---  | --- | --- | --- | --- | --- | --- |
@@ -73,6 +73,15 @@ The test-set classification errors and ECE values obtained from ResNet-50, ResNe
 | ResNet-110  | 4.89 | 5.48 | 5.4 | 5.52 | 5.08 | 5.42 |
 | Wide-ResNet-26-10  | 3.86 | 4.08 | 3.91 | 4.2 | 4.13 | 4.01 |
 | DenseNet-121  | 5.0 | 5.11 | 5.41 | 5.09 | 5.33 | 5.46 |
+
+The following table shows the CIFAR-10 test set ECE % for the same models.
+
+| Model Architecture  | Cross-Entropy | Cross-Entropy (T) | Brier Loss | Brier Loss (T) | MMCE | MMCE (T) | LS-0.05 | LS-0.05 (T) | FL-3 (Ours) | FL-3 (T) (Ours) | FLSD-53 (Ours) | FLSD-53 (T) (Ours) |
+| ---  | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ResNet-50  | 4.35 | 1.35 (2.5) | 1.82 | 1.08 (1.1) | 4.56 | 1.19 (2.6) | 2.96 | 1.67 (0.9) | 1.48 | 1.42 (1.1) | 1.55 | 0.95 (1.1) |
+| ResNet-110  | 4.41 | 1.09 (2.8) | 2.56 | 1.25 (1.2) | 5.08 | 1.42 (2.8) | 2.09 | 2.09 (1) | 1.55 | 1.02 (1.1) | 1.87 | 1.07 (1.1) |
+| Wide-ResNet-26-10  | 3.23 | 0.92 (2.2) | 1.25 | 1.25 (1) | 3.29 | 0.86 (2.2) | 4.26 | 1.84 (0.8) | 1.69 | 0.97 (0.9) | 1.56 | 0.84 (0.9) |
+| DenseNet-121  | 4.52 | 1.31 (2.4) | 1.53 | 1.53 (1) | 5.1 | 1.61 (2.5) | 1.88 | 1.82 (0.9) | 1.32 | 1.26 (0.9) | 1.22 | 1.22 (1) |
 
 ## OOD Notebook
 
