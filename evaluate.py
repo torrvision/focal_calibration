@@ -100,6 +100,7 @@ def parseArgs():
 def get_logits_labels(data_loader, net):
     logits_list = []
     labels_list = []
+    net.eval()
     with torch.no_grad():
         for data, label in data_loader:
             data = data.cuda()

@@ -20,7 +20,7 @@ class ModelWithTemperature(nn.Module):
     def __init__(self, model, log=True):
         super(ModelWithTemperature, self).__init__()
         self.model = model
-        self.temperature = nn.Parameter(torch.ones(1) * 1.5)
+        self.temperature = 1.0
         self.log = log
 
 
@@ -34,8 +34,7 @@ class ModelWithTemperature(nn.Module):
         Perform temperature scaling on logits
         """
         # Expand temperature to match the size of logits
-        temperature = self.temperature.unsqueeze(1).expand(logits.size(0), logits.size(1))
-        return logits / temperature
+        return logits / self.temperature
 
 
     def set_temperature(self,
@@ -69,11 +68,11 @@ class ModelWithTemperature(nn.Module):
 
         nll_val = 10 ** 7
         ece_val = 10 ** 7
-        T_opt_nll = 1
-        T_opt_ece = 1
+        T_opt_nll = 1.0
+        T_opt_ece = 1.0
         T = 0.1
         for i in range(100):
-            self.temperature = nn.Parameter(torch.ones(1) * T)
+            self.temperature = T
             self.cuda()
             after_temperature_nll = nll_criterion(self.temperature_scale(logits), labels).item()
             after_temperature_ece = ece_criterion(self.temperature_scale(logits), labels).item()
@@ -87,20 +86,20 @@ class ModelWithTemperature(nn.Module):
             T += 0.1
 
         if cross_validate == 'ece':
-            self.temperature = nn.Parameter(torch.ones(1) * T_opt_ece)
+            self.temperature = T_opt_ece
         else:
-            self.temperature = nn.Parameter(torch.ones(1) * T_opt_nll)
+            self.temperature = T_opt_nll
         self.cuda()
 
         # Calculate NLL and ECE after temperature scaling
         after_temperature_nll = nll_criterion(self.temperature_scale(logits), labels).item()
         after_temperature_ece = ece_criterion(self.temperature_scale(logits), labels).item()
         if self.log:
-            print('Optimal temperature: %.3f' % self.temperature.item())
+            print('Optimal temperature: %.3f' % self.temperature)
             print('After temperature - NLL: %.3f, ECE: %.3f' % (after_temperature_nll, after_temperature_ece))
 
         return self
 
 
     def get_temperature(self):
-        return self.temperature.item()
+        return self.temperature
