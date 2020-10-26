@@ -39,7 +39,7 @@ In order to train a model, please use the [train.py](train.py) script. The defau
 --model: model to train (resnet50/resnet110/wide_resnet/densenet121)
 ```
 
-As an example, in order to train a ResNet-50 model on CIFAR-10 using focal loss with ```\gammma = 3```, we can write the following script:
+As an example, in order to train a ResNet-50 model on CIFAR-10 using focal loss with ```gamma = 3```, we can write the following script:
 ```
 python train.py --dataset cifar10 --model resnet50 --loss focal_loss --gamma 3.0
 ``` 
@@ -83,7 +83,7 @@ The following table shows the CIFAR-10 test set ECE % for the same models.
 | Wide-ResNet-26-10  | 3.23 | 0.92 (2.2) | **1.25** | 1.25 (1) | 3.29 | 0.86 (2.2) | 4.26 | 1.84 (0.8) | 1.69 | 0.97 (0.9) | 1.56 | **0.84 (0.9)** |
 | DenseNet-121  | 4.52 | 1.31 (2.4) | 1.53 | 1.53 (1) | 5.1 | 1.61 (2.5) | 1.88 | 1.82 (0.9) | 1.32 | 1.26 (0.9) | **1.22** | **1.22 (1)** |
 
-In the above tables, LS-0.05 denotes cross-entropy loss with label smoothing with a smoothing factor of 0.05, FL-3 denotes focal loss with ```gammma = 3``` and FLSD-53 denotes adaptive focal loss.
+In the above tables, LS-0.05 denotes cross-entropy loss with label smoothing with a smoothing factor of 0.05, FL-3 denotes focal loss with ```gamma = 3``` and FLSD-53 denotes adaptive focal loss.
 
 
 ## OOD Notebook
