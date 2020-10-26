@@ -1,6 +1,6 @@
 # Focal Calibration
 
-This repository contains the code for [*Calibrating Deep Neural Networks using Focal Loss*](https://arxiv.org/abs/2002.09437), which has been accepted for publication in NeurIPS 2020.
+This repository contains the code for [*Calibrating Deep Neural Networks using Focal Loss*](https://arxiv.org/abs/2002.09437), which has been accepted in NeurIPS 2020.
 
 If the code or the paper has been useful in your research, please add a citation to our work:
 
@@ -23,7 +23,7 @@ Most datasets will be downloaded directly on running the code. However, [Tiny Im
 
 ### Pretrained models
 
-The pretrained models for Focal Loss (Sample-Dependent gamma 5, 3) and Focal Loss (gamma 3) for all the datasets can be [downloaded from here](http://www.robots.ox.ac.uk/~viveka/focal_calibration/).
+All the pretrained models for all the datasets can be [downloaded from here](http://www.robots.ox.ac.uk/~viveka/focal_calibration/).
 
 ## Training a model
 
@@ -75,4 +75,4 @@ To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-
 
 ## Questions
 
-If you have any questions or doubts, please feel free to reach out to us at the email addresses provided in the paper or you can directly open an issue in this repository.
+If you have any questions or doubts, please feel free to open an issue in this repository or reach out to us at the email addresses provided in the paper.
