@@ -90,9 +90,9 @@ In the above tables, LS-0.05 denotes cross-entropy loss with label smoothing wit
 
 To plot the ROC curve and compute the AUROC for a model trained on CIFAR-10 (in-distribution dataset) and tested on SVHN (out-of-distribution dataset), please use the [evaluate_single_model_ood.ipynb](Experiments/evaluate_single_model_ood.ipynb) notebook. The following is the ROC plot obtained from the ResNet-50 model which we trained on CIFAR-10 using the cross-entropy objective function.
 
-<center>
-<img src="roc.png" width="500" class="center">
-</center>
+<p align="center">
+	<img src="roc.png" width="500" />
+</p>
 
 ## Questions
 
