@@ -1,6 +1,6 @@
 # Focal Calibration
 
-This repository contains the code for [*Calibrating Deep Neural Networks using Focal Loss*](https://arxiv.org/abs/2002.09437), which has been accepted in NeurIPS 2020.
+This repository contains the code for [*Calibrating Deep Neural Networks using Focal Loss*](https://arxiv.org/abs/2002.09437) ([blog](https://torrvision.github.io/focal-calibration.com)), which has been accepted in NeurIPS 2020.
 
 If the code or the paper has been useful in your research, please add a citation to our work:
 
