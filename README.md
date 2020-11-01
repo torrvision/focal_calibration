@@ -46,7 +46,7 @@ python train.py --dataset cifar10 --model resnet50 --loss focal_loss --gamma 3.0
 
 ## Evaluating a model
 
-In order to evaluate a trained model, either use the [evaluate_single_model.ipynb](Experiments/evaluate_single_model.ipynb) notebook or you can also use the [evaluate.py](evaluate.py) script. The script provides values of calibration error scores ECE, AdaECE and Classwise-ECE along with model accuracy. In order to use the script the following parameters need to be provided:
+In order to evaluate a trained model, either use the [evaluate_single_model.ipynb](Experiments/evaluate_single_model.ipynb) notebook or you can also use the [evaluate.py](evaluate.py) code. The shell scripts for using it are present in [evaluate_scripts](evaluate_scripts) folder. The evaluation code provides values of calibration error scores ECE, AdaECE and Classwise-ECE along with model accuracy. In order to use the code the following parameters need to be provided:
 ```
 --dataset: dataset to evaluate on [cifar10/cifar100/tiny_imagenet]
 --dataset-root: path of the Tiny ImageNet dataset (not necessary for CIFAR-10/100)
@@ -56,7 +56,7 @@ In order to evaluate a trained model, either use the [evaluate_single_model.ipyn
 --cverror: error to cross-validate on for temperature scaling (ece/nll)
 ```
 
-As an example, to evaluate a ResNet-50 model trained on CIFAR-10, run the script as:
+As an example, to evaluate a ResNet-50 model trained on CIFAR-10, run the code as:
 ```
 python evaluate.py --dataset cifar10 --model resnet50 --save-path /path/to/saved/model/ --saved_model_name resnet50_cross_entropy_350.model --cverror ece
 ```
