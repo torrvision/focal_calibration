@@ -1,0 +1,7 @@
+title: Calibrating Deep Neural Networks using Focal Loss
+logo: /images/test_nll.png
+description: Jishnu Mukhoti*, Viveka Kulharia*, Amartya Sanyal, Stuart Golodetz, Philip H.S. Torr, Puneet K. Dokania (*-equal contribution)
+theme: jekyll-theme-cayman
+github:
+  repository_url: https://github.com/torrvision/focal_calibration
+  arxiv_url: https://arxiv.org/abs/2002.09437
