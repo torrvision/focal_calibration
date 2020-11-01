@@ -27,7 +27,7 @@ All the pretrained models for all the datasets can be [downloaded from here](htt
 
 ## Training a model
 
-In order to train a model, please use the [train.py](train.py) script. The default configuration (i.e., just running ```python train.py```) will train a ResNet50 model on the cross-entropy loss function. The following are the important parameters of the training:
+In order to train a model, please use the [train.py](train.py) code. The default configuration (i.e., just running ```python train.py```) will train a ResNet50 model on the cross-entropy loss function. The following are the important parameters of the training:
 ```
 --dataset: dataset to train on [cifar10/cifar100/tiny_imagenet]
 --dataset-root: path of the Tiny ImageNet dataset (not necessary for CIFAR-10/100)
@@ -39,6 +39,7 @@ In order to train a model, please use the [train.py](train.py) script. The defau
 --model: model to train (resnet50/resnet110/wide_resnet/densenet121)
 ```
 
+The shell scripts to train different models on different datasets are available in [train_scripts](train_scripts) folder.
 As an example, in order to train a ResNet-50 model on CIFAR-10 using focal loss with ```gamma = 3```, we can write the following script:
 ```
 python train.py --dataset cifar10 --model resnet50 --loss focal_loss --gamma 3.0
