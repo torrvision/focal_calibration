@@ -1,5 +1,5 @@
 
-## [Calibrating Deep Neural Networks using Focal Loss](https://arxiv.org/abs/2002.09437){:target="_blank"}
+## [Calibrating Deep Neural Networks using Focal Loss](https://arxiv.org/abs/2002.09437){:target="_blank"} (NeurIPS'20)
 
 ### What we want
 * Overparameterised classifier deep neural networks trained on the conventional cross-entropy objective are known to be [overconfident and thus miscalibrated](https://arxiv.org/abs/1706.04599){:target="_blank"}.
