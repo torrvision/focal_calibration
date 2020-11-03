@@ -1,13 +1,13 @@
 
-## [Calibrating Deep Neural Networks using Focal Loss](https://arxiv.org/abs/2002.09437)
+## [Calibrating Deep Neural Networks using Focal Loss](https://arxiv.org/abs/2002.09437){:target="_blank"}
 
 ### What we want
-* Overparameterised classifier deep neural networks trained on the conventional cross-entropy objective are known to be [overconfident and thus miscalibrated](https://arxiv.org/abs/1706.04599).
+* Overparameterised classifier deep neural networks trained on the conventional cross-entropy objective are known to be [overconfident and thus miscalibrated](https://arxiv.org/abs/1706.04599){:target="_blank"}.
 * With these networks being deployed in real-life applications like autonomous driving and medical diagnosis, it is imperative for them to predict with calibrated confidence estimates.
 * Ideally, we want a model which is *confident on its correct predictions*, produces *calibrated probability estimates* and also achieves *state-of-the-art test set accuracy*.
 
 ### What we do
-* We explore an alternative loss function, [**focal loss**](https://arxiv.org/abs/1708.02002) for training models.
+* We explore an alternative loss function, [**focal loss**](https://arxiv.org/abs/1708.02002){:target="_blank"} for training models.
 * Focal loss significantly **outperforms cross-entropy** and other baselines on calibration error scores (e.g. ECE) **without compromising on test set accuracy**.
 * This improvement in focal loss is present both **pre and post temperature scaling**.
 * We propose a sample-dependent adaptive way of deciding <img src="https://render.githubusercontent.com/render/math?math=\gamma">, the focal loss hyperparameter.
@@ -41,7 +41,7 @@ We posit the reason behind the above observations as follows:
 
 ## Improving Calibration using Focal Loss
 
-We explore an alternative loss function, [focal loss](https://arxiv.org/abs/1708.02002). Below are the forms of the two loss functions, cross-entropy (CE) and focal loss (Focal) (assuming one-hot ground truth encodings):
+We explore an alternative loss function, [focal loss](https://arxiv.org/abs/1708.02002){:target="_blank"}. Below are the forms of the two loss functions, cross-entropy (CE) and focal loss (Focal) (assuming one-hot ground truth encodings):
 
 <p align="center">
 	<img src="loss_functions.png" />
@@ -52,7 +52,7 @@ In the above equations <img src="https://render.githubusercontent.com/render/mat
 ### Why might focal loss improve calibration?
 
 **Focal Loss minimises a regularised KL divergence.**
-We know that cross-entropy loss minimises the [Kullback-Leibler (KL)](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence) divergence between the target distribution <img src="https://render.githubusercontent.com/render/math?math=q"> over classes and the predicted softmax distribution <img src="https://render.githubusercontent.com/render/math?math=\hat{p}">. As it turns out, focal loss minimises a *regularised KL divergence* between the target and predicted distributions as shown below.
+We know that cross-entropy loss minimises the [Kullback-Leibler (KL)](https://en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence){:target="_blank"} divergence between the target distribution <img src="https://render.githubusercontent.com/render/math?math=q"> over classes and the predicted softmax distribution <img src="https://render.githubusercontent.com/render/math?math=\hat{p}">. As it turns out, focal loss minimises a *regularised KL divergence* between the target and predicted distributions as shown below.
 
 <p align="center">
 	<img src="reg_kl.png" />
@@ -114,9 +114,9 @@ This provides strong evidence in favour of our hypothesis that **focal loss regu
 
 ### Classification Results (Calibration and Accuracy)
 
-* We test the performance of focal loss on several datasets, architectures and using multiple different calibration error scores which include the [Expected Calibration Error](https://people.cs.pitt.edu/~milos/research/AAAI_Calibration.pdf) (ECE), Adaptive ECE (AdaECE), Classwise-ECE and others.
-* We also compare with loss baselines other than cross-entropy, like [Brier Score](https://journals.ametsoc.org/mwr/article/78/1/1/96424/VERIFICATION-OF-FORECASTS-EXPRESSED-IN-TERMS-OF), [MMCE](http://proceedings.mlr.press/v80/kumar18a/kumar18a.pdf) and cross-entropy with [label smoothing](https://arxiv.org/pdf/1906.02629.pdf).
-* We present error bars with confidence intervals for ECE, AdaECE and Classwise-ECE for ResNet-50 and ResNet-110 trained on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html) as well as the test set classification error for the same models below.
+* We test the performance of focal loss on several datasets, architectures and using multiple different calibration error scores which include the [Expected Calibration Error](https://people.cs.pitt.edu/~milos/research/AAAI_Calibration.pdf){:target="_blank"} (ECE), Adaptive ECE (AdaECE), Classwise-ECE and others.
+* We also compare with loss baselines other than cross-entropy, like [Brier Score](https://journals.ametsoc.org/mwr/article/78/1/1/96424/VERIFICATION-OF-FORECASTS-EXPRESSED-IN-TERMS-OF){:target="_blank"}, [MMCE](http://proceedings.mlr.press/v80/kumar18a/kumar18a.pdf){:target="_blank"} and cross-entropy with [label smoothing](https://arxiv.org/pdf/1906.02629.pdf){:target="_blank"}.
+* We present error bars with confidence intervals for ECE, AdaECE and Classwise-ECE for ResNet-50 and ResNet-110 trained on [CIFAR-10](https://www.cs.toronto.edu/~kriz/cifar.html){:target="_blank"} as well as the test set classification error for the same models below.
 
 <p align="center">
 	<img src="error_bars.PNG" />
@@ -137,7 +137,7 @@ This provides strong evidence in favour of our hypothesis that **focal loss regu
 
 ### Detection of OOD Samples
 
-We run the models trained using CIFAR-10 on test data drawn from the [SVHN](http://ufldl.stanford.edu/housenumbers) dataset which is out-of-distribution and consider the softmax entropy of these networks as a measure of uncertainty. For ResNet-110, the ROC plots obtained from this experiment are provided below.
+We run the models trained using CIFAR-10 on test data drawn from the [SVHN](http://ufldl.stanford.edu/housenumbers){:target="_blank"} dataset which is out-of-distribution and consider the softmax entropy of these networks as a measure of uncertainty. For ResNet-110, the ROC plots obtained from this experiment are provided below.
 
 <p align="center">
 	<img src="roc_plots.PNG" width="650"/>
@@ -148,7 +148,7 @@ We run the models trained using CIFAR-10 on test data drawn from the [SVHN](http
 * The results indicate that models trained on focal loss, with *higher AUROC*, are able to detect out-of-distribution samples from SVHN much better than models trained on cross-entropy loss.
 * What is particularly important to see here is that this improved performance is shown both pre and post temperature scaling!
 
-Thus, focal loss seems to be a good alternative to the conventionally used cross-entropy loss for producing confident and calibrated models without compromising on classification accuracy. [Our paper](https://arxiv.org/abs/2002.09437) provides with a lot more experiments and analysis, please have a look. [The code with all the pretrained models](https://github.com/torrvision/focal_calibration) is also available.
+Thus, focal loss seems to be a good alternative to the conventionally used cross-entropy loss for producing confident and calibrated models without compromising on classification accuracy. [Our paper](https://arxiv.org/abs/2002.09437){:target="_blank"} provides with a lot more experiments and analysis, please have a look. [The code with all the pretrained models](https://github.com/torrvision/focal_calibration){:target="_blank"} is also available.
 
 ## Citation and Contact
 
