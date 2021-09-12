@@ -3,6 +3,7 @@
 ## For SST:
 
 Adaptation of [TreeLSTMSentiment](https://github.com/ttpro1995/TreeLSTMSentiment)
+
 Refer [TreeLSTMSentiment](https://github.com/ttpro1995/TreeLSTMSentiment)
 
 ### Installations:
@@ -27,6 +28,7 @@ For label smoothing, replace Experiments/temperature_scaling_sst.py with Experim
 ## For 20 Newsgroup:
 
 Pytorch adaptation from [MMCE](https://github.com/aviralkumar2907/MMCE)
+
 Refer [MMCE](https://github.com/aviralkumar2907/MMCE)
 
 ### Using virtualenv:
