@@ -4,9 +4,9 @@
 
 Adaptation of [TreeLSTMSentiment](https://github.com/ttpro1995/TreeLSTMSentiment)
 
-Refer [TreeLSTMSentiment](https://github.com/ttpro1995/TreeLSTMSentiment)
-
 ### Installations:
+
+Refer [TreeLSTMSentiment](https://github.com/ttpro1995/TreeLSTMSentiment)
 
 conda create -n py_v0.3_3.5 python=3.5
 
@@ -29,11 +29,11 @@ For label smoothing, replace Experiments/temperature_scaling_sst.py with Experim
 
 Pytorch adaptation from [MMCE](https://github.com/aviralkumar2907/MMCE)
 
+### Installations
+
 Refer [MMCE](https://github.com/aviralkumar2907/MMCE)
 
-### Using virtualenv:
-
-Use Python 2.7.12, pytorch 0.4.1, tensorflow 1.4.1, keras 2.1.2
+Use virtualenv with Python 2.7.12, pytorch 0.4.1, tensorflow 1.4.1, keras 2.1.2
 
 ### Training and Evaluation:
 
