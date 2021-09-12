@@ -20,7 +20,7 @@ pip install meowlogtool
 
 ### Training and Evaluation:
 
-Refer *.sh files for training and Evaluation scripts
+Refer sst_*.sh files for training and Evaluation scripts
 
 For label smoothing, replace Experiments/temperature_scaling_sst.py with Experiments/temperature_scaling_sst_smoothing.py; Experiments/error_bars_sst.py with Experiments/error_bars_sst_smoothing.py; treeLSTM/trainer.py with treeLSTM/trainer_smoothing.py and use pytorch_v1.0 
 
@@ -37,7 +37,7 @@ Use virtualenv with Python 2.7.12, pytorch 0.4.1, tensorflow 1.4.1, keras 2.1.2
 
 ### Training and Evaluation:
 
-Refer *.sh files for training and Evaluation scripts
+Refer 20newsgroup_*.sh files for training and Evaluation scripts
 
 ## Pretrained models
 
