@@ -1,0 +1,12 @@
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss cross_entropy --max-dev-epoch 13 --temp 1.8 >>sst_cross_entropy.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss brier_score --max-dev-epoch 20 --temp 2.5 >>sst_brier_score.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss focal_loss --gamma 1.0 --max-dev-epoch 23 --temp 1.6 >>sst_fl_g1.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss focal_loss --gamma 2.0 --max-dev-epoch 19 --temp 1.0 >>sst_fl_g2.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss focal_loss --gamma 3.0 --max-dev-epoch 8 --temp 0.5 >>sst_fl_g3.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss focal_loss --gamma-schedule 1 --gamma 5.0 --gamma2 3.0 --gamma3 1.0 --max-dev-epoch 18 --temp 1.4 >>sst_fl_scheduled_g531.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss focal_loss --gamma-schedule 1 --gamma 5.0 --gamma2 3.0 --gamma3 2.0 --max-dev-epoch 18 --temp 0.9 >>sst_fl_scheduled_g532.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss focal_loss_adaptive --gamma 2.0 --max-dev-epoch 15 --temp 2.0 >>sst_fl_adaptive_g532.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss focal_loss_adaptive --gamma 3.0 --max-dev-epoch 15 --temp 0.7 >>sst_fl_adaptive_g53.txt
+#CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/Label_Smoothing/NLP/Best_Models/ --loss cross_entropy_smoothed --smoothing 0.05 --max-dev-epoch 24 --temp 1.2 >> sst_ls_0.05.txt
+CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss mmce_weighted --lamda 2.0 --max-dev-epoch 7 --temp 1.5 >>sst_mmce.txt
+#CUDA_VISIBLE_DEVICES=0 python sst_eval_error_bars.py --saved Outputs/focalCalibration/nlp/treeLSTM/ --loss mmce_weighted --lamda 8.0 --max-dev-epoch 7 --temp 1.4 >>sst_error_bars.txt

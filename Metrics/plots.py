@@ -8,6 +8,7 @@ References:
 
 import math
 import matplotlib.pyplot as plt
+plt.switch_backend('agg')
 plt.rcParams.update({'font.size': 20})
 
 # Some keys used for the following dictionaries
@@ -56,7 +57,7 @@ def _populate_bins(confs, preds, labels, num_bins=10):
     return bin_dict
 
 
-def reliability_plot(confs, preds, labels, num_bins=15):
+def reliability_plot(confs, preds, labels, num_bins=10):
     '''
     Method to draw a reliability plot from a model's predictions and confidences.
     '''
@@ -75,7 +76,7 @@ def reliability_plot(confs, preds, labels, num_bins=15):
     plt.show()
 
 
-def bin_strength_plot(confs, preds, labels, num_bins=15):
+def bin_strength_plot(confs, preds, labels, num_bins=10):
     '''
     Method to draw a plot for the number of samples in each confidence bin.
     '''
@@ -92,3 +93,32 @@ def bin_strength_plot(confs, preds, labels, num_bins=15):
     plt.ylabel('Percentage of samples')
     plt.xlabel('Confidence')
     plt.show()
+
+
+def two_bin_strength_plots(confs_correct, confs_incorrect, preds, labels, num_bins=10):
+    '''
+    Method to draw a plot for the number of samples in each confidence bin.
+    '''
+    bin_dict_correct = _populate_bins(confs_correct, preds, labels, num_bins)
+    bin_dict_incorrect = _populate_bins(confs_incorrect, preds, labels, num_bins)
+    bns = [(i / float(num_bins)) for i in range(num_bins)]
+    num_samples = len(labels)
+    y_correct = []
+    for i in range(num_bins):
+        n = (bin_dict_correct[i][COUNT] / float(num_samples)) * 100
+        y_correct.append(n)
+
+    y_incorrect = []
+    for i in range(num_bins):
+        n = (bin_dict_incorrect[i][COUNT] / float(num_samples)) * 100
+        y_incorrect.append(n)
+
+    plt.figure(figsize=(10, 8))  # width:20, height:3
+    plt.bar(bns, y_correct, align='edge', width=0.01,
+            color='blue', alpha=0.5, label='Percentage correct')
+    plt.bar(bns, y_incorrect, align='edge', width=0.01,
+            color='orange', alpha=0.5, label='Percentage incorrect')
+    plt.ylabel('Percentage of samples')
+    plt.xlabel('Confidence')
+    plt.savefig('./confidence_dist.pdf')
+

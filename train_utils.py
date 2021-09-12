@@ -7,50 +7,29 @@ from torch.nn import functional as F
 from torch import nn
 
 from Losses.loss import cross_entropy, focal_loss, focal_loss_adaptive
+from Losses.loss import cross_entropy_with_regularizer, focal_loss_with_regularizer
+from Losses.loss import focal_loss_with_regularizer_diff_gamma
 from Losses.loss import mmce, mmce_weighted
-from Losses.loss import brier_score
 
 
-loss_function_dict = {
-    'cross_entropy': cross_entropy,
-    'focal_loss': focal_loss,
-    'focal_loss_adaptive': focal_loss_adaptive,
-    'mmce': mmce,
-    'mmce_weighted': mmce_weighted,
-    'brier_score': brier_score
-}
-
-
-def train_single_epoch(epoch,
-                       model,
-                       train_loader,
-                       optimizer,
-                       device,
-                       loss_function='cross_entropy',
-                       gamma=1.0,
-                       lamda=1.0,
-                       loss_mean=False):
+def train_cross_entropy(epoch, model, train_loader, optimizer, device):
     '''
-    Util method for training a model for a single epoch.
+    Util method for training with cross entropy loss.
     '''
     log_interval = 10
+    # Signalling the model that it is in training mode
     model.train()
     train_loss = 0
     num_samples = 0
     for batch_idx, (data, labels) in enumerate(train_loader):
+        # Loading the data onto the GPU
         data = data.to(device)
         labels = labels.to(device)
 
         optimizer.zero_grad()
 
         logits = model(data)
-        if ('mmce' in loss_function):
-            loss = (len(data) * loss_function_dict[loss_function](logits, labels, gamma=gamma, lamda=lamda, device=device))
-        else:
-            loss = loss_function_dict[loss_function](logits, labels, gamma=gamma, lamda=lamda, device=device)
-
-        if loss_mean:
-            loss = loss / len(data)
+        loss = cross_entropy(logits, labels)
 
         loss.backward()
         torch.nn.utils.clip_grad_norm(model.parameters(), 2)
@@ -70,31 +49,259 @@ def train_single_epoch(epoch,
 
 
 
-def test_single_epoch(epoch,
-                      model,
-                      test_val_loader,
-                      device,
-                      loss_function='cross_entropy',
-                      gamma=1.0,
-                      lamda=1.0):
+def train_focal_loss(epoch, model, train_loader, optimizer, device, gamma=1.0):
     '''
-    Util method for testing a model for a single epoch.
+    Util method for training with focal loss.
     '''
-    model.eval()
-    loss = 0
+    log_interval = 10
+    # Signalling the model that it is in training mode
+    model.train()
+    train_loss = 0
     num_samples = 0
-    with torch.no_grad():
-        for i, (data, labels) in enumerate(test_val_loader):
-            data = data.to(device)
-            labels = labels.to(device)
+    for batch_idx, (data, labels) in enumerate(train_loader):
+        # Loading the data onto the GPU
+        data = data.to(device)
+        labels = labels.to(device)
 
-            logits = model(data)
-            if ('mmce' in loss_function):
-                loss += (len(data) * loss_function_dict[loss_function](logits, labels, gamma=gamma, lamda=lamda, device=device).item())
-            else:
-                loss += loss_function_dict[loss_function](logits, labels, gamma=gamma, lamda=lamda, device=device).item()
-            num_samples += len(data)
+        optimizer.zero_grad()
 
-    print('======> Test set loss: {:.4f}'.format(
-        loss / num_samples))
-    return loss / num_samples
+        logits = model(data)
+        loss = focal_loss(logits, labels, gamma=gamma)
+
+        loss.backward()
+        torch.nn.utils.clip_grad_norm(model.parameters(), 2)
+        train_loss += loss.item()
+        optimizer.step()
+        num_samples += len(data)
+
+        if batch_idx % log_interval == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader) * len(data),
+                100. * batch_idx / len(train_loader),
+                loss.item()))
+
+    print('====> Epoch: {} Average loss: {:.4f}'.format(
+        epoch, train_loss / num_samples))
+    return train_loss / num_samples
+
+
+
+def train_focal_loss_adaptive(epoch, model, train_loader, optimizer, device, gamma=3.0):
+    '''
+    Util method for training with focal loss with adaptive gamma.
+    '''
+    log_interval = 10
+    # Signalling the model that it is in training mode
+    model.train()
+    train_loss = 0
+    num_samples = 0
+    for batch_idx, (data, labels) in enumerate(train_loader):
+        # Loading the data onto the GPU
+        data = data.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+
+        logits = model(data)
+        loss = focal_loss_adaptive(logits, labels, gamma=gamma, device=device)
+
+        loss.backward()
+        torch.nn.utils.clip_grad_norm(model.parameters(), 2)
+        train_loss += loss.item()
+        optimizer.step()
+        num_samples += len(data)
+
+        if batch_idx % log_interval == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader) * len(data),
+                100. * batch_idx / len(train_loader),
+                loss.item()))
+
+    print('====> Epoch: {} Average loss: {:.4f}'.format(
+        epoch, train_loss / num_samples))
+    return train_loss / num_samples
+
+
+
+def train_cross_entropy_with_reg(epoch, model, train_loader, optimizer, device, gamma=1.0, lamda=1.0):
+    '''
+    Util method for training with cross entropy with entropy regularizer.
+    '''
+    log_interval = 10
+    # Signalling the model that it is in training mode
+    model.train()
+    train_loss = 0
+    num_samples = 0
+    for batch_idx, (data, labels) in enumerate(train_loader):
+        # Loading the data onto the GPU
+        data = data.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+
+        logits = model(data)
+        loss = cross_entropy_with_regularizer(logits, labels, gamma=gamma, lamda=lamda)
+
+        loss.backward()
+        torch.nn.utils.clip_grad_norm(model.parameters(), 2)
+        train_loss += loss.item()
+        optimizer.step()
+        num_samples += len(data)
+
+        if batch_idx % log_interval == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader) * len(data),
+                100. * batch_idx / len(train_loader),
+                loss.item()))
+
+    print('====> Epoch: {} Average loss: {:.4f}'.format(
+        epoch, train_loss / num_samples))
+    return train_loss / num_samples
+
+
+
+def train_focal_loss_with_reg(epoch, model, train_loader, optimizer, device, gamma=1.0, lamda=1.0):
+    '''
+    Util method for training with focal loss with entropy regularizer.
+    '''
+    log_interval = 10
+    # Signalling the model that it is in training mode
+    model.train()
+    train_loss = 0
+    num_samples = 0
+    for batch_idx, (data, labels) in enumerate(train_loader):
+        # Loading the data onto the GPU
+        data = data.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+
+        logits = model(data)
+        loss = focal_loss_with_regularizer(logits, labels, gamma=gamma, lamda=lamda)
+
+        loss.backward()
+        torch.nn.utils.clip_grad_norm(model.parameters(), 2)
+        train_loss += loss.item()
+        optimizer.step()
+        num_samples += len(data)
+
+        if batch_idx % log_interval == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader) * len(data),
+                100. * batch_idx / len(train_loader),
+                loss.item()))
+
+    print('====> Epoch: {} Average loss: {:.4f}'.format(
+        epoch, train_loss / num_samples))
+    return train_loss / num_samples
+
+
+
+def train_focal_loss_with_reg_diff_gamma(epoch, model, train_loader, optimizer, device, gamma1=1.0, gamma2=1.0, lamda=1.0):
+    '''
+    Util method for training with focal loss with entropy regularizer with different gammas.
+    '''
+    log_interval = 10
+    # Signalling the model that it is in training mode
+    model.train()
+    train_loss = 0
+    num_samples = 0
+    for batch_idx, (data, labels) in enumerate(train_loader):
+        # Loading the data onto the GPU
+        data = data.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+
+        logits = model(data)
+        loss = focal_loss_with_regularizer_diff_gamma(logits, labels, gamma1=gamma1, gamma2=gamma2, lamda=lamda)
+
+        loss.backward()
+        torch.nn.utils.clip_grad_norm(model.parameters(), 2)
+        train_loss += loss.item()
+        optimizer.step()
+        num_samples += len(data)
+
+        if batch_idx % log_interval == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader) * len(data),
+                100. * batch_idx / len(train_loader),
+                loss.item()))
+
+    print('====> Epoch: {} Average loss: {:.4f}'.format(
+        epoch, train_loss / num_samples))
+    return train_loss / num_samples
+
+
+
+def train_mmce_weighted(epoch, model, train_loader, optimizer, device, lamda=1.0):
+    '''
+    Util method for training with mmce_weighted.
+    '''
+    log_interval = 10
+    # Signalling the model that it is in training mode
+    model.train()
+    train_loss = 0
+    num_samples = 0
+    for batch_idx, (data, labels) in enumerate(train_loader):
+        # Loading the data onto the GPU
+        data = data.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+
+        logits = model(data)
+        loss = mmce_weighted(logits, labels, device=device, lamda=lamda)
+
+        loss.backward()
+        torch.nn.utils.clip_grad_norm(model.parameters(), 2)
+        train_loss += loss.item()
+        optimizer.step()
+        num_samples += len(data)
+
+        if batch_idx % log_interval == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader) * len(data),
+                100. * batch_idx / len(train_loader),
+                loss.item()))
+
+    print('====> Epoch: {} Average loss: {:.4f}'.format(
+        epoch, train_loss / num_samples))
+    return train_loss / num_samples
+
+
+
+def train_mmce(epoch, model, train_loader, optimizer, device, lamda=1.0):
+    '''
+    Util method for training with mmce.
+    '''
+    log_interval = 10
+    # Signalling the model that it is in training mode
+    model.train()
+    train_loss = 0
+    num_samples = 0
+    for batch_idx, (data, labels) in enumerate(train_loader):
+        # Loading the data onto the GPU
+        data = data.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+
+        logits = model(data)
+        loss = mmce(logits, labels, device=device, lamda=lamda)
+
+        loss.backward()
+        torch.nn.utils.clip_grad_norm(model.parameters(), 2)
+        train_loss += loss.item()
+        optimizer.step()
+        num_samples += len(data)
+
+        if batch_idx % log_interval == 0:
+            print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
+                epoch, batch_idx * len(data), len(train_loader) * len(data),
+                100. * batch_idx / len(train_loader),
+                loss.item()))
+
+    print('====> Epoch: {} Average loss: {:.4f}'.format(
+        epoch, train_loss / num_samples))
+    return train_loss / num_samples

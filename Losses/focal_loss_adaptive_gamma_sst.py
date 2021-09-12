@@ -12,7 +12,6 @@ from torch.autograd import Variable
 from scipy.special import lambertw
 import numpy as np
 
-
 def get_gamma(p=0.2):
     '''
     Get the gamma for a given pt where the function g(p, gamma) = 1
@@ -31,17 +30,16 @@ for p in ps:
     i += 1
 
 class FocalLossAdaptive(nn.Module):
-    def __init__(self, gamma=0, size_average=True, device=None):
+    def __init__(self, gamma=0, size_average=True):
         super(FocalLossAdaptive, self).__init__()
         self.size_average = size_average
         self.gamma = gamma
-        self.device = device
 
     def get_gamma_list(self, pt):
         gamma_list = []
         batch_size = pt.shape[0]
         for i in range(batch_size):
-            pt_sample = pt[i].item()
+            pt_sample = pt[i].data[0]
             if (pt_sample >= 0.5):
                 gamma_list.append(self.gamma)
                 continue
@@ -50,7 +48,7 @@ class FocalLossAdaptive(nn.Module):
                 if pt_sample < key:
                     gamma_list.append(gamma_dic[key])
                     break
-        return torch.tensor(gamma_list).to(self.device)
+        return Variable(torch.Tensor(gamma_list)).cuda()
 
     def forward(self, input, target):
         if input.dim()>2:

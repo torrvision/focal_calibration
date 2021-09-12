@@ -8,6 +8,8 @@ Reference:
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.autograd import Variable
+
 
 class MMCE(nn.Module):
     """
@@ -31,8 +33,8 @@ class MMCE(nn.Module):
         predicted_probs = F.softmax(input, dim=1)
         predicted_probs, pred_labels = torch.max(predicted_probs, 1)
         correct_mask = torch.where(torch.eq(pred_labels, target),
-                          torch.ones(pred_labels.shape).to(self.device),
-                          torch.zeros(pred_labels.shape).to(self.device))
+                          torch.ones(pred_labels.shape).cuda(),
+                          torch.zeros(pred_labels.shape).cuda())
 
         c_minus_r = correct_mask - predicted_probs
 
@@ -55,9 +57,10 @@ class MMCE_weighted(nn.Module):
     """
     Computes MMCE_w loss.
     """
-    def __init__(self, device):
+    def __init__(self):
         super(MMCE_weighted, self).__init__()
-        self.device = device
+        self.input = []
+        self.target = []
 
     def torch_kernel(self, matrix):
         return torch.exp(-1.0*torch.abs(matrix[:, :, 0] - matrix[:, :, 1])/(0.4))
@@ -81,7 +84,30 @@ class MMCE_weighted(nn.Module):
     def get_out_tensor(self, tensor1, tensor2):
         return torch.mean(tensor1*tensor2)
 
-    def forward(self, input, target):
+    def get_data_len(self):
+        return len(self.target)
+
+    def initialize_list(self):
+        self.input = []
+        self.target = []
+
+    def set_list(self, input, target):
+        self.input = input
+        self.target = target
+
+    def forward(self, logits, target):
+        ce = F.cross_entropy(logits, target)
+        self.input.append(logits)
+        self.target.append(target)
+        return ce
+
+    def where(self, cond, x_1, x_2):
+        cond = cond.float()
+        return (cond * Variable(x_1)) + ((1-cond) * Variable(x_2))
+
+    def forward_mmce(self):
+        input = torch.cat(self.input,dim=0)
+        target = torch.cat(self.target,dim=0)
         if input.dim()>2:
             input = input.view(input.size(0),input.size(1),-1)  # N,C,H,W => N,C,H*W
             input = input.transpose(1,2)    # N,C,H*W => N,H*W,C
@@ -92,21 +118,20 @@ class MMCE_weighted(nn.Module):
         predicted_probs = F.softmax(input, dim=1)
         predicted_probs, predicted_labels = torch.max(predicted_probs, 1)
 
-        correct_mask = torch.where(torch.eq(predicted_labels, target),
-                                    torch.ones(predicted_labels.shape).to(self.device),
-                                    torch.zeros(predicted_labels.shape).to(self.device))
+        correct_mask = self.where(torch.eq(predicted_labels, target),
+                                    torch.ones(predicted_labels.shape).cuda(),
+                                    torch.zeros(predicted_labels.shape).cuda())
 
-        k = torch.sum(correct_mask).type(torch.int64)
-        k_p = torch.sum(1.0 - correct_mask).type(torch.int64)
-        cond_k = torch.where(torch.eq(k,0),torch.tensor(0).to(self.device),torch.tensor(1).to(self.device))
-        cond_k_p = torch.where(torch.eq(k_p,0),torch.tensor(0).to(self.device),torch.tensor(1).to(self.device))
-        k = torch.max(k, torch.tensor(1).to(self.device))*cond_k*cond_k_p + (1 - cond_k*cond_k_p)*2 
-        k_p = torch.max(k_p, torch.tensor(1).to(self.device))*cond_k_p*cond_k + ((1 - cond_k_p*cond_k)*
+        k = torch.sum(correct_mask).int()
+        k_p = torch.sum(1.0 - correct_mask).int()
+        cond_k = self.where(torch.eq(k,0),torch.Tensor([0]).cuda(),torch.Tensor([1]).cuda()).int()
+        cond_k_p = self.where(torch.eq(k_p,0),torch.Tensor([0]).cuda(),torch.Tensor([1]).cuda()).int()
+        k = torch.max(k, Variable(torch.Tensor([1]).cuda()).int())*cond_k*cond_k_p + (1 - cond_k*cond_k_p)*2 
+        k_p = torch.max(k_p, Variable(torch.Tensor([1]).cuda()).int())*cond_k_p*cond_k + ((1 - cond_k_p*cond_k)*
                                             (correct_mask.shape[0] - 2))
 
-
-        correct_prob, _ = torch.topk(predicted_probs*correct_mask, k)
-        incorrect_prob, _ = torch.topk(predicted_probs*(1 - correct_mask), k_p)
+        correct_prob, _ = torch.topk(predicted_probs*correct_mask, k.data[0])
+        incorrect_prob, _ = torch.topk(predicted_probs*(1 - correct_mask), k_p.data[0])
 
         correct_prob_pairs, incorrect_prob_pairs,\
                correct_incorrect_pairs = self.get_pairs(correct_prob, incorrect_prob)
@@ -136,4 +161,4 @@ class MMCE_weighted(nn.Module):
         mmd_error = 1.0/(m*m + 1e-5) * torch.sum(correct_correct_vals) 
         mmd_error += 1.0/(n*n + 1e-5) * torch.sum(incorrect_incorrect_vals)
         mmd_error -= 2.0/(m*n + 1e-5) * torch.sum(correct_incorrect_vals)
-        return torch.max((cond_k*cond_k_p).type(torch.FloatTensor).to(self.device).detach()*torch.sqrt(mmd_error + 1e-10), torch.tensor(0.0).to(self.device))
+        return torch.max(Variable((cond_k*cond_k_p).type(torch.FloatTensor).cuda().data)*torch.sqrt(mmd_error + 1e-10), Variable(torch.Tensor([0.0]).cuda()))

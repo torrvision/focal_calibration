@@ -16,12 +16,13 @@ class BrierScore(nn.Module):
             input = input.transpose(1,2)    # N,C,H*W => N,H*W,C
             input = input.contiguous().view(-1,input.size(2))   # N,H*W,C => N*H*W,C
         target = target.view(-1,1)
-        target_one_hot = torch.FloatTensor(input.shape).to(target.get_device())
+        target_one_hot = torch.FloatTensor(input.shape).cuda()# .to(target.get_device())
         target_one_hot.zero_()
-        target_one_hot.scatter_(1, target, 1)
+        target_one_hot.scatter_(1, target.data, 1)
 
         pt = F.softmax(input)
-        squared_diff = (target_one_hot - pt) ** 2
+        squared_diff = (Variable(target_one_hot) - pt) ** 2
 
         loss = torch.sum(squared_diff) / float(input.shape[0])
         return loss
+

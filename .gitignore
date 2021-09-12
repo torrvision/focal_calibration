@@ -1,4 +1,5 @@
 data
-__pycache__
-tiny-imagenet-200
-*.model
+*.json
+*.pyc
+*.swp
+temp_file.log
