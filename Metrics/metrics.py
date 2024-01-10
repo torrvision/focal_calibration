@@ -110,7 +110,7 @@ def l2_error(confs, preds, labels, num_bins=15):
         bin_count = bin_dict[i][COUNT]
         l2_sum += (float(bin_count) / num_samples) * \
                (bin_accuracy - bin_confidence)**2
-        l2_error = math.sqrt(l2_sum)
+    l2_error = math.sqrt(l2_sum)
     return l2_error
 
 
